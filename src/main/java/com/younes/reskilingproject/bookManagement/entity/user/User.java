@@ -2,9 +2,8 @@ package com.younes.reskilingproject.bookManagement.entity.user;
 
 import jakarta.persistence.*;
 
-@Entity(name = "user")
+@Entity(name = "user_profile")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
