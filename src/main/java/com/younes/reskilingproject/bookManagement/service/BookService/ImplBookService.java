@@ -19,7 +19,7 @@ public class ImplBookService implements BookService {
         return bookRepository.findAll();
     }
     @Override
-    public Book findBookById(Long id) {
+    public Book findBookById(long id) {
         Optional<Book> result = bookRepository.findById(id);
         Book book = null;
         if(result.isPresent()) {
@@ -35,7 +35,17 @@ public class ImplBookService implements BookService {
     }
 
     @Override
-    public void deleteBook(Long id) {
+    public Book editBook(long id, Book book) {
+        Book foundBook = bookRepository.findById(id).orElse(null);
+        if(foundBook != null) {
+            bookRepository.save(book);
+            return book;
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteBook(long id) {
         bookRepository.deleteById(id);
     }
 }
