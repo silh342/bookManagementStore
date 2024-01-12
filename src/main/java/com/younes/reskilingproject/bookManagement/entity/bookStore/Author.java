@@ -14,6 +14,7 @@ public class Author {
     private String fullName;
     @Column
     private String description;
+    // TODO add warning when trying to delete the author that his books are going to be deleted
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 
@@ -50,7 +51,6 @@ public class Author {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
-
     // ToStringMethod
     @Override
     public String toString() {

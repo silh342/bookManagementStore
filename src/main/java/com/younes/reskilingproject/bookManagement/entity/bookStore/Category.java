@@ -10,7 +10,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
-    @Column(name = "category_name")
+    @Column(name = "category_name", unique = true)
     private String categoryName;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Book> books;
