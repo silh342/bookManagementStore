@@ -1,11 +1,11 @@
 package com.younes.reskilingproject.bookManagement.service.BookService;
 
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
+import com.younes.reskilingproject.bookManagement.errorHandler.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ImplBookService implements BookService {
@@ -20,32 +20,16 @@ public class ImplBookService implements BookService {
     }
     @Override
     public Book findBookById(long id) {
-        Optional<Book> result = bookRepository.findById(id);
-        Book book = null;
-        if(result.isPresent()) {
-            book = result.get();
-        } else throw new RuntimeException("Could not find a book by the id of" + id);
-
-        return book;
+        return bookRepository.findById(id).orElseThrow(
+                    () -> new BookNotFoundException("Could not find the book by the id " + id));
     }
-
     @Override
-    public Book addBook(Book newBook) {
+    public Book saveBook(Book newBook) {
         return bookRepository.save(newBook);
     }
-
-    @Override
-    public Book editBook(long id, Book book) {
-        Book foundBook = bookRepository.findById(id).orElse(null);
-        if(foundBook != null) {
-            bookRepository.save(book);
-            return book;
-        }
-        return null;
-    }
-
     @Override
     public void deleteBook(long id) {
-        bookRepository.deleteById(id);
+        if(findBookById(id) != null) bookRepository.deleteById(id);
+
     }
 }

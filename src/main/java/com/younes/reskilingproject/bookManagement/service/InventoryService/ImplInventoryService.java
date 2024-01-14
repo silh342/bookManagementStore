@@ -26,8 +26,8 @@ public class ImplInventoryService implements InventoryService{
 
     @Override
     public Inventory updateEntry(long id, int quantity) {
-        Inventory tempEntry = inventoryRepository.findById(id).orElse(null);
-        if(tempEntry == null) return null;
+        Inventory tempEntry = inventoryRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Entry by the id : " + id + "not found"));
         tempEntry.setQuantity(quantity);
         return inventoryRepository.save(tempEntry);
     }
