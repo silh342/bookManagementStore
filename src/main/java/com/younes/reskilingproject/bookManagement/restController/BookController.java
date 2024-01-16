@@ -5,7 +5,9 @@ import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
 import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
 import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
+import com.younes.reskilingproject.bookManagement.service.AuthorService.ImplAuthorService;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
+import com.younes.reskilingproject.bookManagement.service.CategoryService.ImplCategoryService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +22,18 @@ public class BookController {
 
     private ImplBookService bookService;
     private ImplInventoryService inventoryService;
+    private ImplCategoryService categoryService;
+    private ImplAuthorService authorService;
 
     @Autowired
-    public BookController(ImplBookService bookService, ImplInventoryService inventoryService) {
+    public BookController(ImplBookService bookService,
+                          ImplInventoryService inventoryService,
+                          ImplCategoryService categoryService,
+                          ImplAuthorService authorService) {
         this.bookService = bookService;
         this.inventoryService = inventoryService;
+        this.categoryService = categoryService;
+        this.authorService = authorService;
     }
     @GetMapping("/books/{id}")
     public Book findBook(@PathVariable Long id) {
@@ -36,6 +45,7 @@ public class BookController {
     }
     @PostMapping("/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
+
         Book newBook = bookService.saveBook(reqBody.getBook());
         Inventory newEntry = new Inventory(reqBody.getQuantity(), newBook);
         inventoryService.insertEntry(newEntry);

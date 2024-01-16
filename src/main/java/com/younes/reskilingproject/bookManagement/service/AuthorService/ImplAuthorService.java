@@ -25,6 +25,10 @@ public class ImplAuthorService implements AuthorService {
         return authorRepository.findAll();
     }
     @Override
+    public Author findByAuthorFullName(String fullName) {
+        return authorRepository.findByAuthorFullName(fullName);
+    }
+    @Override
     public Author findAuthor(long id) {
         return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Author Not found"));
     }

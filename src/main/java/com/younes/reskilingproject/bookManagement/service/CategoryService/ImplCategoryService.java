@@ -24,6 +24,10 @@ public class ImplCategoryService implements CategoryService{
         return categoryRepository.save(newCategory);
     }
     @Override
+    public Category findCategoryByName(String name) {
+        return categoryRepository.findByCategoryName(name);
+    }
+    @Override
     public void deleteCategory(long id) {
         categoryRepository.deleteById(id);
     }
