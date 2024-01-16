@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity(name="category")
+@Entity()
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -23,6 +24,14 @@ public class Category {
     }
 
     // Getter Setter
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+    public List<Book> getBooks() {
+        return books;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }

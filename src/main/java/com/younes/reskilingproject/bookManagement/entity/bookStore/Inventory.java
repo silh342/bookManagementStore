@@ -2,7 +2,8 @@ package com.younes.reskilingproject.bookManagement.entity.bookStore;
 
 import jakarta.persistence.*;
 
-@Entity(name = "inventory")
+@Entity
+@Table(name = "inventory")
 public class Inventory {
 
     @Id

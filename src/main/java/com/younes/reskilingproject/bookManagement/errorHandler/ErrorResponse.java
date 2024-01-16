@@ -1,14 +1,14 @@
 package com.younes.reskilingproject.bookManagement.errorHandler;
 
-public class BookErrorResponse {
+public class ErrorResponse {
     private int status;
     private String message;
     private long timestamp;
 
     // Constructor
-    public BookErrorResponse() {}
+    public ErrorResponse() {}
 
-    public BookErrorResponse(int status, String message, long timestamp) {
+    public ErrorResponse(int status, String message, long timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;

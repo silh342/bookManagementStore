@@ -3,8 +3,8 @@ package com.younes.reskilingproject.bookManagement.restController;
 import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
-import com.younes.reskilingproject.bookManagement.errorHandler.BookErrorResponse;
-import com.younes.reskilingproject.bookManagement.errorHandler.BookNotFoundException;
+import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
+import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class BookController {
         this.bookService = bookService;
         this.inventoryService = inventoryService;
     }
-    @GetMapping("books/{id}")
+    @GetMapping("/books/{id}")
     public Book findBook(@PathVariable Long id) {
         return bookService.findBookById(id);
     }
@@ -62,8 +62,8 @@ public class BookController {
 
     // add an exception handler using @ExceptionHandler
     @ExceptionHandler
-    public ResponseEntity<BookErrorResponse> handleException(BookNotFoundException exc) {
-        BookErrorResponse customErr = new BookErrorResponse();
+    public ResponseEntity<ErrorResponse> handleException(BookNotFoundException exc) {
+        ErrorResponse customErr = new ErrorResponse();
 
         customErr.setStatus(HttpStatus.NOT_FOUND.value());
         customErr.setMessage(exc.getMessage());
