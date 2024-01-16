@@ -3,6 +3,7 @@ package com.younes.reskilingproject.bookManagement.service.BookService;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 public class ImplBookService implements BookService {
 
     private BookRepository bookRepository;
+
+    @Autowired
     public ImplBookService(BookRepository bookRepo) {
         bookRepository = bookRepo;
     }

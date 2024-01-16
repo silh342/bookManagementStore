@@ -1,6 +1,8 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
 import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
+import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
+import com.younes.reskilingproject.bookManagement.entity.bookStore.Category;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
 import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
@@ -22,18 +24,21 @@ public class BookController {
 
     private ImplBookService bookService;
     private ImplInventoryService inventoryService;
-    private ImplCategoryService categoryService;
     private ImplAuthorService authorService;
+    private ImplCategoryService categoryService;
+
 
     @Autowired
     public BookController(ImplBookService bookService,
                           ImplInventoryService inventoryService,
-                          ImplCategoryService categoryService,
-                          ImplAuthorService authorService) {
+                          ImplAuthorService authorService,
+                          ImplCategoryService categoryService) {
+
         this.bookService = bookService;
         this.inventoryService = inventoryService;
-        this.categoryService = categoryService;
         this.authorService = authorService;
+        this.categoryService = categoryService;
+
     }
     @GetMapping("/books/{id}")
     public Book findBook(@PathVariable Long id) {
@@ -45,13 +50,29 @@ public class BookController {
     }
     @PostMapping("/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
+        Book newBook = reqBody.getBook();
+        // Added this piece of code to automatically add author and category in the base
+        // in case they didn't exist since we're adding them with a book forms in front-end
 
-        Book newBook = bookService.saveBook(reqBody.getBook());
-        Inventory newEntry = new Inventory(reqBody.getQuantity(), newBook);
-        inventoryService.insertEntry(newEntry);
-        return newBook;
+        if(authorService.findByAuthorFullName(reqBody.getAuthorName()) == null) {
+            Author newAuthor = new Author(reqBody.getAuthorName(), " ", null);
+            authorService.saveAuthor(newAuthor);
+            newBook.setAuthor(newAuthor);
+        }
+        if(categoryService.findCategoryByName(reqBody.getCategoryName()) == null) {
+            Category newCategory = new Category(reqBody.getCategoryName(), null);
+            categoryService.addCategory(newCategory);
+            newBook.setCategory(newCategory);
+        }
+
+//        Inventory newEntry = new Inventory(reqBody.getQuantity(), newBook);
+//        inventoryService.insertEntry(newEntry);
+
+        return bookService.saveBook(newBook);
+
+
     }
-    @PutMapping("/books/{id}")
+    @PutMapping("/books")
     public Book editBook(@RequestBody Book book) {
         return bookService.saveBook(book);
     }

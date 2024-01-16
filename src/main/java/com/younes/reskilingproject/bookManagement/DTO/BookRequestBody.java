@@ -4,24 +4,9 @@ import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 
 public class BookRequestBody {
     private Book book;
-
-    // TODO added category and author field to determine them when adding a book
-    private String categoryName;
-    private String authorName;
     private int quantity;
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-    public void setCategoryName(String category) {
-        this.categoryName = categoryName;
-    }
-    public String getAuthorName() {
-        return authorName;
-    }
-    public void setAuthorName(String author) {
-        this.authorName = authorName;
-    }
+    private String authorName;
+    private String categoryName;
 
     public Book getBook() {
         return book;
@@ -35,5 +20,26 @@ public class BookRequestBody {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    public String getAuthorName() {
+        return authorName;
+    }
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+    public String getCategoryName() {
+        return categoryName;
+    }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
+    @Override
+    public String toString() {
+        return "BookRequestBody{" +
+                "book=" + book +
+                ", quantity=" + quantity +
+                ", authorName='" + authorName + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
+    }
 }
