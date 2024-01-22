@@ -1,8 +1,8 @@
 package com.younes.reskilingproject.bookManagement.entity.bookStore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,9 +15,9 @@ public class Author {
     private String fullName;
     @Column
     private String description;
-    // TODO add warning when trying to delete the author that his books are going to be deleted
+    @JsonManagedReference(value = "author_books")
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private Set<Book> books = new HashSet<>();
+    private Set<Book> books;
 
     // Constructor
 
@@ -53,10 +53,12 @@ public class Author {
         this.books = books;
     }
     // ToStringMethod
+
     @Override
     public String toString() {
-        return "Author{" +
-                "fullName='" + fullName + '\'' +
+        return "Author {" +
+                "authorId=" + authorId +
+                ", fullName='" + fullName + '\'' +
                 ", description='" + description + '\'' +
                 ", books=" + books +
                 '}';

@@ -1,5 +1,6 @@
 package com.younes.reskilingproject.bookManagement.entity.bookStore;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class Inventory {
     private int quantity;
     @OneToOne
     @JoinColumn(name = "book_id")
+    @JsonBackReference(value = "inventory_books")
     private Book book;
 
     // Constructor

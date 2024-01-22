@@ -4,7 +4,7 @@ package com.younes.reskilingproject.bookManagement.restController;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
 import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
 import com.younes.reskilingproject.bookManagement.errorHandler.authorError.AuthorNotFoundException;
-import com.younes.reskilingproject.bookManagement.service.AuthorService.AuthorService;
+import com.younes.reskilingproject.bookManagement.service.AuthorService.ImplAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class AuthorController {
-
-    private AuthorService authorService;
+    private ImplAuthorService authorService;
     @Autowired
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(ImplAuthorService authorService) {
         this.authorService = authorService;
     }
     @GetMapping("/authors")

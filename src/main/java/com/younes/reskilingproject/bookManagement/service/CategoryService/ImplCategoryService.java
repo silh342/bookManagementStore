@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImplCategoryService implements CategoryService{
@@ -24,7 +25,7 @@ public class ImplCategoryService implements CategoryService{
         return categoryRepository.save(newCategory);
     }
     @Override
-    public Category findCategoryByName(String name) {
+    public Optional<Category> findCategoryByName(String name) {
         return categoryRepository.findByCategoryName(name);
     }
     @Override

@@ -1,5 +1,7 @@
 package com.younes.reskilingproject.bookManagement.entity.bookStore;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -19,14 +21,18 @@ public class Book {
     private float price;
     @ManyToOne
     @JoinColumn(name="category_id")
+    @JsonBackReference(value = "category_books")
     private Category category;
     @ManyToOne
     @JoinColumn(name="author_id")
+    @JsonBackReference(value = "author_books")
     private Author author;
     @Column(name = "date_publication")
     private Date datePublication;
     @Column(name = "date_creation")
     private Date dateCreation;
+
+    @JsonManagedReference(value = "inventory_books")
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private Inventory inventory;
 
@@ -71,7 +77,6 @@ public class Book {
     public Inventory getInventory() {
         return inventory;
     }
-
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
@@ -100,7 +105,7 @@ public class Book {
     // ToStringMethod
     @Override
     public String toString() {
-        return "Book{" +
+        return "Book {" +
                 "ISBN='" + ISBN + '\'' +
                 ", title='" + title + '\'' +
                 ", price=" + price +

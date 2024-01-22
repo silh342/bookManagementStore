@@ -6,6 +6,6 @@ import java.util.List;
 public interface BookService {
     public List<Book> findAllBooks();
     public Book findBookById(long id);
-    public Book saveBook(Book book);
+    public Book createBook(Book book, String authorName, String categoryName, int quantity);
     public void deleteBook(long id);
 }

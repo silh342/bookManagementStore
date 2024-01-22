@@ -1,15 +1,11 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
 import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Category;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
 import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
 import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
 import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
-import com.younes.reskilingproject.bookManagement.service.AuthorService.ImplAuthorService;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
-import com.younes.reskilingproject.bookManagement.service.CategoryService.ImplCategoryService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,21 +20,11 @@ public class BookController {
 
     private ImplBookService bookService;
     private ImplInventoryService inventoryService;
-    private ImplAuthorService authorService;
-    private ImplCategoryService categoryService;
-
 
     @Autowired
-    public BookController(ImplBookService bookService,
-                          ImplInventoryService inventoryService,
-                          ImplAuthorService authorService,
-                          ImplCategoryService categoryService) {
-
+    public BookController(ImplBookService bookService, ImplInventoryService inventoryService) {
         this.bookService = bookService;
         this.inventoryService = inventoryService;
-        this.authorService = authorService;
-        this.categoryService = categoryService;
-
     }
     @GetMapping("/books/{id}")
     public Book findBook(@PathVariable Long id) {
@@ -48,33 +34,16 @@ public class BookController {
     public List<Book> findAllBooks() {
         return bookService.findAllBooks();
     }
-    @PostMapping("/books")
+    @PostMapping(value = "/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
-        Book newBook = reqBody.getBook();
-        // Added this piece of code to automatically add author and category in the base
-        // in case they didn't exist since we're adding them with a book forms in front-end
-
-        if(authorService.findByAuthorFullName(reqBody.getAuthorName()) == null) {
-            Author newAuthor = new Author(reqBody.getAuthorName(), " ", null);
-            authorService.saveAuthor(newAuthor);
-            newBook.setAuthor(newAuthor);
-        }
-        if(categoryService.findCategoryByName(reqBody.getCategoryName()) == null) {
-            Category newCategory = new Category(reqBody.getCategoryName(), null);
-            categoryService.addCategory(newCategory);
-            newBook.setCategory(newCategory);
-        }
-
-//        Inventory newEntry = new Inventory(reqBody.getQuantity(), newBook);
-//        inventoryService.insertEntry(newEntry);
-
-        return bookService.saveBook(newBook);
-
-
+        // Add author and category if they don't exist
+        return bookService.createBook(reqBody.getBook(),
+                    reqBody.getAuthorName(), reqBody.getCategoryName(), reqBody.getQuantity());
     }
     @PutMapping("/books")
-    public Book editBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
+    public Book editBook(@RequestBody BookRequestBody requestBody) {
+        return bookService.createBook(requestBody.getBook(), requestBody.getAuthorName(),
+                requestBody.getCategoryName(), requestBody.getQuantity());
     }
     @DeleteMapping("/books/{id}")
     public void deleteBook(@PathVariable long id) {
@@ -83,8 +52,8 @@ public class BookController {
 
     // for Inventory routes
     @GetMapping("/books/{id}/inventory")
-    public Inventory getBookInventory(@PathVariable long id) {
-        return inventoryService.getEntry(id);
+    public Book getBookInventory(@PathVariable long id) {
+        return inventoryService.getEntry(id).getBook();
     }
     @PostMapping("/books/{id}/inventory")
     public Inventory editBookInventory(@PathVariable long id, @RequestBody int quantity) {
