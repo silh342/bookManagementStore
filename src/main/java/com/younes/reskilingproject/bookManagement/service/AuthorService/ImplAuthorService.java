@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.AuthorService;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
+import com.younes.reskilingproject.bookManagement.entity.Author;
 import com.younes.reskilingproject.bookManagement.errorHandler.authorError.AuthorNotFoundException;
 import com.younes.reskilingproject.bookManagement.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

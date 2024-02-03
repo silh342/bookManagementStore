@@ -1,10 +1,10 @@
-package com.younes.reskillingproject.userManagement.entity.security.Service;
+package com.younes.reskilingproject.bookManagement.security.Service;
 
-import com.younes.reskillingproject.userManagement.entity.security.model.Role;
-import com.younes.reskillingproject.userManagement.entity.security.model.User;
-import com.younes.reskillingproject.userManagement.entity.security.model.UserRequestBody;
-import com.younes.reskillingproject.userManagement.entity.security.repository.RoleRepository;
-import com.younes.reskillingproject.userManagement.entity.security.repository.UserRepository;
+import com.younes.reskilingproject.bookManagement.security.model.Role;
+import com.younes.reskilingproject.bookManagement.security.model.User;
+import com.younes.reskilingproject.bookManagement.security.repository.RoleRepository;
+import com.younes.reskilingproject.bookManagement.security.repository.UserRepository;
+import com.younes.reskilingproject.bookManagement.security.model.UserRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,7 +50,6 @@ public class UserServiceImpl implements UserDetailsService {
         user.setUserRoles(ListRoles);
         return userRepository.save(user);
     }
-
     public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
     }

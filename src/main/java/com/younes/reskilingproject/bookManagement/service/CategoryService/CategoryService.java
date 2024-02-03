@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.CategoryService;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Category;
+import com.younes.reskilingproject.bookManagement.entity.Category;
 
 import java.util.List;
 import java.util.Optional;

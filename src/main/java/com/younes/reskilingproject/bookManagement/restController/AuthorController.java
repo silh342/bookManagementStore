@@ -1,8 +1,8 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
-import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
+import com.younes.reskilingproject.bookManagement.entity.Author;
+import com.younes.reskilingproject.bookManagement.errorHandler.ErrorNotFoundException;
 import com.younes.reskilingproject.bookManagement.errorHandler.authorError.AuthorNotFoundException;
 import com.younes.reskilingproject.bookManagement.service.AuthorService.ImplAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +41,11 @@ public class AuthorController {
         authorService.deleteAuthor(id);
     }
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(AuthorNotFoundException exc) {
-        ErrorResponse customErr = new ErrorResponse();
-
+    public ResponseEntity<ErrorNotFoundException> handleException(AuthorNotFoundException exc) {
+        ErrorNotFoundException customErr = new ErrorNotFoundException();
         customErr.setStatus(HttpStatus.NOT_FOUND.value());
         customErr.setMessage(exc.getMessage());
         customErr.setTimestamp(System.currentTimeMillis());
-
         return new ResponseEntity<>(customErr, HttpStatus.NOT_FOUND);
     }
 }

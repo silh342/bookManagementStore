@@ -1,11 +1,11 @@
-package com.younes.reskillingproject.userManagement.entity.security.controller;
+package com.younes.reskilingproject.bookManagement.security.controller;
 
 
-import com.younes.reskillingproject.userManagement.entity.security.Service.UserServiceImpl;
-import com.younes.reskillingproject.userManagement.entity.security.model.Role;
-import com.younes.reskillingproject.userManagement.entity.security.model.User;
-import com.younes.reskillingproject.userManagement.entity.security.model.UserRequestBody;
-import com.younes.reskillingproject.userManagement.entity.security.repository.RoleRepository;
+import com.younes.reskilingproject.bookManagement.security.Service.UserServiceImpl;
+import com.younes.reskilingproject.bookManagement.security.model.Role;
+import com.younes.reskilingproject.bookManagement.security.model.User;
+import com.younes.reskilingproject.bookManagement.security.model.UserRequestBody;
+import com.younes.reskilingproject.bookManagement.security.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserServiceImpl userService;

@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.InventoryService;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
+import com.younes.reskilingproject.bookManagement.entity.Inventory;
 
 import java.util.List;
 

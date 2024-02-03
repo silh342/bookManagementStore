@@ -3,6 +3,8 @@ package com.younes.reskilingproject.bookManagement;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+//exclude = {SecurityAutoConfiguration .class}
+//(scanBasePackages = {"com.younes.reskilingproject.bookManagement", "com.younes.reskillingproject.userManagement.security"})
 @SpringBootApplication
 public class BookManagementApplication {
 

@@ -1,7 +1,8 @@
-package com.younes.reskillingproject.userManagement.entity.security;
+package com.younes.reskilingproject.bookManagement.security;
 
 
-import com.younes.reskillingproject.userManagement.entity.security.Service.UserServiceImpl;
+import com.younes.reskilingproject.bookManagement.security.Service.UserServiceImpl;
+import com.younes.reskilingproject.bookManagement.security.error.CustomAuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,28 +21,34 @@ import org.springframework.security.web.SecurityFilterChain;
 public class UserSecurityConfig {
 
     @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder());
-        provider.setUserDetailsService(userDetailsManager());
+        provider.setUserDetailsService(userDetailsService());
         return provider;
     }
-
     @Bean
-    public UserDetailsService userDetailsManager() {
+    public UserDetailsService userDetailsService() {
         return new UserServiceImpl();
     }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer -> configurer
-                .requestMatchers("/auth/user").permitAll()
-                .requestMatchers("/auth/role").hasRole("ADMIN")
+                .requestMatchers("/api/user").permitAll()
+                .requestMatchers("/api/role").hasRole("ADMIN")
+                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN","USER","CUSTOMER")
                 .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("ADMIN","USER","CUSTOMER")
                 .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")

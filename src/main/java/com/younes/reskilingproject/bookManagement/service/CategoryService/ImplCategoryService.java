@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.CategoryService;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Category;
+import com.younes.reskilingproject.bookManagement.entity.Category;
 import com.younes.reskilingproject.bookManagement.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class ImplCategoryService implements CategoryService{
     }
     @Override
     public Optional<Category> findCategoryByName(String name) {
-        return categoryRepository.findByCategoryName(name);
+        return categoryRepository.findCategoryByCategoryNameIgnoreCase(name);
     }
     @Override
     public void deleteCategory(long id) {

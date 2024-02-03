@@ -1,4 +1,4 @@
-package com.younes.reskilingproject.bookManagement.entity.bookStore;
+package com.younes.reskilingproject.bookManagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,19 +21,18 @@ public class Book {
     private float price;
     @ManyToOne
     @JoinColumn(name="category_id")
-    @JsonBackReference(value = "category_books")
+    @JsonBackReference(value = "category_book")
     private Category category;
     @ManyToOne
     @JoinColumn(name="author_id")
-    @JsonBackReference(value = "author_books")
+    @JsonBackReference(value = "author_book")
     private Author author;
     @Column(name = "date_publication")
     private Date datePublication;
     @Column(name = "date_creation")
     private Date dateCreation;
-
-    @JsonManagedReference(value = "inventory_books")
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "inventory_books")
     private Inventory inventory;
 
     // Constructor

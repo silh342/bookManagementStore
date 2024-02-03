@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.DTO;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
+import com.younes.reskilingproject.bookManagement.entity.Book;
 
 public class BookRequestBody {
     private Book book;
@@ -36,7 +36,7 @@ public class BookRequestBody {
     @Override
     public String toString() {
         return "BookRequestBody{" +
-                "book=" + book +
+                "book=" + book.getTitle() +
                 ", quantity=" + quantity +
                 ", authorName='" + authorName + '\'' +
                 ", categoryName='" + categoryName + '\'' +

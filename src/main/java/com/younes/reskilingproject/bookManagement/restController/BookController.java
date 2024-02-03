@@ -1,9 +1,9 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
 import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Book;
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Inventory;
-import com.younes.reskilingproject.bookManagement.errorHandler.ErrorResponse;
+import com.younes.reskilingproject.bookManagement.entity.Book;
+import com.younes.reskilingproject.bookManagement.entity.Inventory;
+import com.younes.reskilingproject.bookManagement.errorHandler.ErrorNotFoundException;
 import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
@@ -30,9 +30,25 @@ public class BookController {
     public Book findBook(@PathVariable Long id) {
         return bookService.findBookById(id);
     }
+    @GetMapping("/books/category/{name}")
+    public List<Book> findBooksByCategory(@PathVariable String name) {
+        return bookService.findBooksByCategoryName(name);
+    }
+    @GetMapping("/books/author/{name}")
+    public List<Book> findBooksByAuthor(@PathVariable String name) {
+        return bookService.findBooksByAuthor(name);
+    }
     @GetMapping("/books")
     public List<Book> findAllBooks() {
         return bookService.findAllBooks();
+    }
+    @GetMapping("/books/sortedbytitle")
+    public List<Book> getBooksByOrderAsc() {
+        return bookService.findAllBooksOrderByTitleAsc();
+    }
+    @GetMapping("/books/sortedbytitledesc")
+    public List<Book> getBooksByOrderDesc() {
+        return bookService.findAllBooksOrderByTitleDesc();
     }
     @PostMapping(value = "/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
@@ -49,21 +65,24 @@ public class BookController {
     public void deleteBook(@PathVariable long id) {
         bookService.deleteBook(id);
     }
-
     // for Inventory routes
-    @GetMapping("/books/{id}/inventory")
-    public Book getBookInventory(@PathVariable long id) {
-        return inventoryService.getEntry(id).getBook();
+    @GetMapping("/books/inventory/{id}")
+    public Inventory getBookInventory(@PathVariable long id) {
+        return inventoryService.getEntry(id);
     }
-    @PostMapping("/books/{id}/inventory")
+    @PostMapping("/books/inventory/{id}")
     public Inventory editBookInventory(@PathVariable long id, @RequestBody int quantity) {
         return inventoryService.updateEntry(id, quantity);
+    }
+    @DeleteMapping("/inventory/{id}")
+    public void deleteInventory(@PathVariable long id) {
+        inventoryService.deleteEntry(id);
     }
 
     // add an exception handler using @ExceptionHandler
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(BookNotFoundException exc) {
-        ErrorResponse customErr = new ErrorResponse();
+    public ResponseEntity<ErrorNotFoundException> handleException(BookNotFoundException exc) {
+        ErrorNotFoundException customErr = new ErrorNotFoundException();
 
         customErr.setStatus(HttpStatus.NOT_FOUND.value());
         customErr.setMessage(exc.getMessage());

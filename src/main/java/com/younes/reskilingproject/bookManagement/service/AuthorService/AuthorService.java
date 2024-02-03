@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.AuthorService;
 
-import com.younes.reskilingproject.bookManagement.entity.bookStore.Author;
+import com.younes.reskilingproject.bookManagement.entity.Author;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
 package com.younes.reskilingproject.bookManagement.errorHandler;
 
-public class ErrorResponse {
+public class ErrorNotFoundException {
     private int status;
     private String message;
     private long timestamp;
 
     // Constructor
-    public ErrorResponse() {}
+    public ErrorNotFoundException() {}
 
-    public ErrorResponse(int status, String message, long timestamp) {
+    public ErrorNotFoundException(int status, String message, long timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;

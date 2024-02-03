@@ -1,4 +1,4 @@
-package com.younes.reskilingproject.bookManagement.entity.bookStore;
+package com.younes.reskilingproject.bookManagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -36,5 +36,14 @@ public class Inventory {
     }
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", book=" + book +
+                '}';
     }
 }
