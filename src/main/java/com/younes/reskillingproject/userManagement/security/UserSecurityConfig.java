@@ -1,8 +1,8 @@
-package com.younes.reskilingproject.bookManagement.security;
+package com.younes.reskillingproject.userManagement.security;
 
 
-import com.younes.reskilingproject.bookManagement.security.Service.UserServiceImpl;
-import com.younes.reskilingproject.bookManagement.security.error.CustomAuthenticationFailureHandler;
+import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
+import com.younes.reskillingproject.userManagement.security.error.CustomAuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

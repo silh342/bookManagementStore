@@ -1,4 +1,4 @@
-package com.younes.reskilingproject.bookManagement.security.error;
+package com.younes.reskillingproject.userManagement.security.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

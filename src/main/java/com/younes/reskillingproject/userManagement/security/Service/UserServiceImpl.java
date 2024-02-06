@@ -1,10 +1,10 @@
-package com.younes.reskilingproject.bookManagement.security.Service;
+package com.younes.reskillingproject.userManagement.security.Service;
 
-import com.younes.reskilingproject.bookManagement.security.model.Role;
-import com.younes.reskilingproject.bookManagement.security.model.User;
-import com.younes.reskilingproject.bookManagement.security.repository.RoleRepository;
-import com.younes.reskilingproject.bookManagement.security.repository.UserRepository;
-import com.younes.reskilingproject.bookManagement.security.model.UserRequestBody;
+import com.younes.reskillingproject.userManagement.security.model.Role;
+import com.younes.reskillingproject.userManagement.security.model.User;
+import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
+import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
+import com.younes.reskillingproject.userManagement.security.model.UserRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

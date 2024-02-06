@@ -1,7 +1,6 @@
 package com.younes.reskilingproject.bookManagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -21,11 +20,11 @@ public class Book {
     private float price;
     @ManyToOne
     @JoinColumn(name="category_id")
-    @JsonBackReference(value = "category_book")
+    @JsonIgnoreProperties("books")
     private Category category;
     @ManyToOne
     @JoinColumn(name="author_id")
-    @JsonBackReference(value = "author_book")
+    @JsonIgnoreProperties("books")
     private Author author;
     @Column(name = "date_publication")
     private Date datePublication;

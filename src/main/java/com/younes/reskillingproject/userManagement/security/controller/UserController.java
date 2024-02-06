@@ -1,11 +1,11 @@
-package com.younes.reskilingproject.bookManagement.security.controller;
+package com.younes.reskillingproject.userManagement.security.controller;
 
 
-import com.younes.reskilingproject.bookManagement.security.Service.UserServiceImpl;
-import com.younes.reskilingproject.bookManagement.security.model.Role;
-import com.younes.reskilingproject.bookManagement.security.model.User;
-import com.younes.reskilingproject.bookManagement.security.model.UserRequestBody;
-import com.younes.reskilingproject.bookManagement.security.repository.RoleRepository;
+import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
+import com.younes.reskillingproject.userManagement.security.model.Role;
+import com.younes.reskillingproject.userManagement.security.model.User;
+import com.younes.reskillingproject.userManagement.security.model.UserRequestBody;
+import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;

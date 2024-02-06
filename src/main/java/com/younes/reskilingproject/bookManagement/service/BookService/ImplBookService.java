@@ -1,5 +1,6 @@
 package com.younes.reskilingproject.bookManagement.service.BookService;
 
+import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.Author;
 import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.entity.Category;
@@ -13,10 +14,7 @@ import com.younes.reskilingproject.bookManagement.repository.InventoryRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ImplBookService implements BookService {
@@ -47,15 +45,23 @@ public class ImplBookService implements BookService {
     }
     @Override
     public List<Book> findBooksByCategoryName(String categoryName) {
-        Category category = categoryRepository.findCategoryByCategoryNameIgnoreCase(categoryName)
+        List<Book> books = new ArrayList<>();
+        List<Category> categories = categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName)
                 .orElseThrow(() -> new RuntimeException("Category Not Found"));
-        return bookRepository.findBooksByCategory(category);
+        for(Category cat: categories) {
+            books.addAll(bookRepository.findBooksByCategory(cat));
+        }
+        return books;
     }
     @Override
     public List<Book> findBooksByAuthor(String authorName) {
-        Author author = authorRepository.findAuthorByFullNameIgnoreCase(authorName)
+        List<Book> books = new ArrayList<>();
+        List<Author> authors = authorRepository.findAuthorByFullNameContainingIgnoreCase(authorName)
                 .orElseThrow(() -> new AuthorNotFoundException("Author Not Found"));
-        return bookRepository.findBooksByAuthor(author);
+        for(Author aut: authors) {
+            books.addAll(bookRepository.findBooksByAuthor(aut));
+        }
+        return books;
     }
     @Override
     public List<Book> findAllBooksOrderByTitleAsc() {
@@ -66,18 +72,18 @@ public class ImplBookService implements BookService {
         return bookRepository.findAllByOrderByTitleDesc();
     }
     @Override
-    public Book createBook(Book newBook, String authorName, String categoryName, int quantity) {
-        Set<Book> listAuthorBooks = new HashSet<>();
-        List<Book> listBooksCategory = new ArrayList<>();
+    public Book saveBook(Book newBook, String authorName, String categoryName, int quantity) {
 
         Author author = authorRepository.findAuthorByFullNameIgnoreCase(authorName)
                 .orElseGet(() -> {
+                    Set<Book> listAuthorBooks = new HashSet<>();
                     listAuthorBooks.add(newBook);
                     Author newAuthor = new Author(authorName, " ", listAuthorBooks);
                     return authorRepository.save(newAuthor);
                 });
         Category category = categoryRepository.findCategoryByCategoryNameIgnoreCase(categoryName)
                 .orElseGet(() -> {
+                    List<Book> listBooksCategory = new ArrayList<>();
                     listBooksCategory.add(newBook);
                     Category newCategory = new Category(categoryName, listBooksCategory);
                     return categoryRepository.save(newCategory);
@@ -93,6 +99,40 @@ public class ImplBookService implements BookService {
         newBook.setInventory(newEntry);
 
         return bookRepository.save(newBook);
+    }
+    @Override
+    public Book editBook(long id, BookRequestBody book) {
+
+        Book existingBook = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book Not Found"));
+        Category existingCategory = categoryRepository.findCategoryByCategoryNameIgnoreCase(book.getCategoryName())
+                .orElseGet(() -> {
+                    List<Book> categoryBooks = new ArrayList<>();
+                    categoryBooks.add(existingBook);
+                    Category newCategory = new Category(book.getCategoryName(), categoryBooks);
+                    return categoryRepository.save(newCategory);
+                });
+        Author existingAuthor = authorRepository.findAuthorByFullNameIgnoreCase(book.getAuthorName())
+                .orElseGet(() -> {
+                    Set<Book> authorBooks = new HashSet<>();
+                    authorBooks.add(existingBook);
+                    Author author = new Author(book.getAuthorName(),"", authorBooks);
+                    return authorRepository.save(author);
+                });
+
+            existingBook.setTitle(book.getBook().getTitle());
+            existingBook.setPrice(book.getBook().getPrice());
+            existingBook.setISBN(book.getBook().getISBN());
+            existingBook.setDateCreation(book.getBook().getDateCreation());
+            existingBook.setDatePublication(book.getBook().getDatePublication());
+            existingBook.setAuthor(existingAuthor);
+            existingAuthor.getBooks().add(existingBook);
+            existingBook.setCategory(existingCategory);
+            existingCategory.getBooks().add(existingBook);
+
+        if(existingBook.getInventory().getQuantity() != book.getQuantity()) {
+            existingBook.getInventory().setQuantity(book.getQuantity());
+        }
+        return bookRepository.save(existingBook);
     }
     @Override
     public void deleteBook(long id) {

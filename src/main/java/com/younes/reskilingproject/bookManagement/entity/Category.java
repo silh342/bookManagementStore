@@ -1,13 +1,12 @@
 package com.younes.reskilingproject.bookManagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity()
 @Table(name = "category")
-
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +14,7 @@ public class Category {
     @Column(name = "category_name", unique = true)
     private String categoryName;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "category_book")
+    @JsonIgnoreProperties("category")
     private List<Book> books;
 
     // Constructor

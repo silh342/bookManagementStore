@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ public class Author {
     @Column
     private String description;
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "author_book")
+    @JsonIgnoreProperties("author")
     private Set<Book> books;
 
     // Constructor

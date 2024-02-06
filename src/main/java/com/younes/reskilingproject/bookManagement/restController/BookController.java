@@ -2,10 +2,12 @@ package com.younes.reskilingproject.bookManagement.restController;
 
 import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.Book;
+import com.younes.reskilingproject.bookManagement.entity.Category;
 import com.younes.reskilingproject.bookManagement.entity.Inventory;
 import com.younes.reskilingproject.bookManagement.errorHandler.ErrorNotFoundException;
 import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
+import com.younes.reskilingproject.bookManagement.service.CategoryService.ImplCategoryService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,17 +16,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class BookController {
 
     private ImplBookService bookService;
     private ImplInventoryService inventoryService;
+    private ImplCategoryService categoryService;
 
     @Autowired
-    public BookController(ImplBookService bookService, ImplInventoryService inventoryService) {
+    public BookController(ImplBookService bookService,
+                          ImplInventoryService inventoryService,
+                          ImplCategoryService categoryService) {
         this.bookService = bookService;
         this.inventoryService = inventoryService;
+        this.categoryService = categoryService;
     }
     @GetMapping("/books/{id}")
     public Book findBook(@PathVariable Long id) {
@@ -42,6 +49,10 @@ public class BookController {
     public List<Book> findAllBooks() {
         return bookService.findAllBooks();
     }
+    @GetMapping("/categories")
+    public List<Category> findAllCategories() {
+        return categoryService.findAllCategories();
+    }
     @GetMapping("/books/sortedbytitle")
     public List<Book> getBooksByOrderAsc() {
         return bookService.findAllBooksOrderByTitleAsc();
@@ -53,13 +64,13 @@ public class BookController {
     @PostMapping(value = "/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
         // Add author and category if they don't exist
-        return bookService.createBook(reqBody.getBook(),
+        System.out.println(reqBody);
+        return bookService.saveBook(reqBody.getBook(),
                     reqBody.getAuthorName(), reqBody.getCategoryName(), reqBody.getQuantity());
     }
-    @PutMapping("/books")
-    public Book editBook(@RequestBody BookRequestBody requestBody) {
-        return bookService.createBook(requestBody.getBook(), requestBody.getAuthorName(),
-                requestBody.getCategoryName(), requestBody.getQuantity());
+    @PutMapping("/books/{id}")
+    public Book editBook(@PathVariable long id, @RequestBody BookRequestBody requestBody) {
+        return bookService.editBook(id, requestBody);
     }
     @DeleteMapping("/books/{id}")
     public void deleteBook(@PathVariable long id) {
