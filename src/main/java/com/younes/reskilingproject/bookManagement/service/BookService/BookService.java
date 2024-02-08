@@ -11,6 +11,7 @@ public interface BookService {
     public Book editBook(long id, BookRequestBody book);
     public List<Book> findBooksByCategoryName(String categoryName);
     public List<Book> findBooksByAuthor(String authorName);
+    public List<Book> findBooksByAllFields(String keyword);
     public List<Book> findAllBooksOrderByTitleAsc();
     public List<Book> findAllBooksOrderByTitleDesc();
     public void deleteBook(long id);

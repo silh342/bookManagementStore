@@ -45,6 +45,10 @@ public class BookController {
     public List<Book> findBooksByAuthor(@PathVariable String name) {
         return bookService.findBooksByAuthor(name);
     }
+    @GetMapping("/books/search/{keyword}")
+    public List<Book> findBooksByAllFields(@PathVariable("keyword") String keyword) {
+        return bookService.findBooksByAllFields(keyword);
+    }
     @GetMapping("/books")
     public List<Book> findAllBooks() {
         return bookService.findAllBooks();

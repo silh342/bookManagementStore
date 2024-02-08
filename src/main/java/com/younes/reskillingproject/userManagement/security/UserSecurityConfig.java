@@ -5,7 +5,6 @@ import com.younes.reskillingproject.userManagement.security.Service.UserServiceI
 import com.younes.reskillingproject.userManagement.security.error.CustomAuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -42,18 +41,19 @@ public class UserSecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer -> configurer
-                .requestMatchers("/api/user").permitAll()
-                .requestMatchers("/api/role").hasRole("ADMIN")
-                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
-                .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
-                .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
-                .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN","USER","CUSTOMER")
-                .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("ADMIN","USER","CUSTOMER")
-                .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN"));
+        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+//        http.authorizeHttpRequests(configurer -> configurer
+//                .requestMatchers("/api/user").permitAll()
+//                .requestMatchers("/api/role").hasRole("ADMIN")
+//                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
+//                .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
+//                .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
+//                .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
+//                .requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN","USER","CUSTOMER")
+//                .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("ADMIN","USER","CUSTOMER")
+//                .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
+//                .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
+//                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN"));
         // use HTTP Basic authentication
         http.httpBasic(Customizer.withDefaults());
         // disable Cross Site Request Forgery (CSRF) to enable when creating front end

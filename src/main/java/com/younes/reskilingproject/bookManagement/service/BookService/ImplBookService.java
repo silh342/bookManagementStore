@@ -63,6 +63,11 @@ public class ImplBookService implements BookService {
         }
         return books;
     }
+
+    @Override
+    public List<Book> findBooksByAllFields(String keyword) {
+        return bookRepository.searchBooksByAllFields(keyword);
+    }
     @Override
     public List<Book> findAllBooksOrderByTitleAsc() {
         return bookRepository.findAllByOrderByTitleAsc();
