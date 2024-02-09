@@ -5,8 +5,9 @@ import com.younes.reskilingproject.bookManagement.entity.Author;
 import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.entity.Category;
 import com.younes.reskilingproject.bookManagement.entity.Inventory;
-import com.younes.reskilingproject.bookManagement.errorHandler.authorError.AuthorNotFoundException;
-import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
+import com.younes.reskilingproject.bookManagement.errorHandler.AuthorException;
+import com.younes.reskilingproject.bookManagement.errorHandler.BookException;
+import com.younes.reskilingproject.bookManagement.errorHandler.CategoryException;
 import com.younes.reskilingproject.bookManagement.repository.AuthorRepository;
 import com.younes.reskilingproject.bookManagement.repository.BookRepository;
 import com.younes.reskilingproject.bookManagement.repository.CategoryRepository;
@@ -14,7 +15,10 @@ import com.younes.reskilingproject.bookManagement.repository.InventoryRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ImplBookService implements BookService {
@@ -41,13 +45,13 @@ public class ImplBookService implements BookService {
     @Override
     public Book findBookById(long id) {
         return bookRepository.findById(id).orElseThrow(
-                    () -> new BookNotFoundException("Could not find the book by the id " + id));
+                    () -> new BookException("Could not find the book by the id " + id));
     }
     @Override
     public List<Book> findBooksByCategoryName(String categoryName) {
         List<Book> books = new ArrayList<>();
         List<Category> categories = categoryRepository.findCategoryByCategoryNameContainingIgnoreCase(categoryName)
-                .orElseThrow(() -> new RuntimeException("Category Not Found"));
+                .orElseThrow(() -> new CategoryException("Category Not Found"));
         for(Category cat: categories) {
             books.addAll(bookRepository.findBooksByCategory(cat));
         }
@@ -57,7 +61,7 @@ public class ImplBookService implements BookService {
     public List<Book> findBooksByAuthor(String authorName) {
         List<Book> books = new ArrayList<>();
         List<Author> authors = authorRepository.findAuthorByFullNameContainingIgnoreCase(authorName)
-                .orElseThrow(() -> new AuthorNotFoundException("Author Not Found"));
+                .orElseThrow(() -> new AuthorException("Author not found"));
         for(Author aut: authors) {
             books.addAll(bookRepository.findBooksByAuthor(aut));
         }
@@ -108,7 +112,8 @@ public class ImplBookService implements BookService {
     @Override
     public Book editBook(long id, BookRequestBody book) {
 
-        Book existingBook = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book Not Found"));
+        Book existingBook = bookRepository.findById(id)
+                .orElseThrow(() -> new BookException("Book Not Found"));
         Category existingCategory = categoryRepository.findCategoryByCategoryNameIgnoreCase(book.getCategoryName())
                 .orElseGet(() -> {
                     List<Book> categoryBooks = new ArrayList<>();

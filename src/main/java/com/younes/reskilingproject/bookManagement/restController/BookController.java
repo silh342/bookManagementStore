@@ -4,14 +4,10 @@ import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.entity.Category;
 import com.younes.reskilingproject.bookManagement.entity.Inventory;
-import com.younes.reskilingproject.bookManagement.errorHandler.ErrorNotFoundException;
-import com.younes.reskilingproject.bookManagement.errorHandler.bookError.BookNotFoundException;
 import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
 import com.younes.reskilingproject.bookManagement.service.CategoryService.ImplCategoryService;
 import com.younes.reskilingproject.bookManagement.service.InventoryService.ImplInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -92,17 +88,5 @@ public class BookController {
     @DeleteMapping("/inventory/{id}")
     public void deleteInventory(@PathVariable long id) {
         inventoryService.deleteEntry(id);
-    }
-
-    // add an exception handler using @ExceptionHandler
-    @ExceptionHandler
-    public ResponseEntity<ErrorNotFoundException> handleException(BookNotFoundException exc) {
-        ErrorNotFoundException customErr = new ErrorNotFoundException();
-
-        customErr.setStatus(HttpStatus.NOT_FOUND.value());
-        customErr.setMessage(exc.getMessage());
-        customErr.setTimestamp(System.currentTimeMillis());
-
-        return new ResponseEntity<>(customErr, HttpStatus.NOT_FOUND);
     }
 }
