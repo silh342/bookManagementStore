@@ -1,7 +1,6 @@
 package com.younes.reskillingproject.userManagement.security.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-            throws IOException, ServletException {
+            throws IOException {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         Map<String, Object> errorMap = new HashMap<>();

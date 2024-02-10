@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserDetailsService {
                 mapRolesToAuthorities(user.getUserRoles()));
     }
 
-    public User addUser(UserRequestBody newUser) {
+    public void addUser(UserRequestBody newUser) {
         Set<Role> ListRoles = new HashSet<>();
         User user = new User();
 
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserDetailsService {
             if(role != null) ListRoles.add(role);
         }
         user.setUserRoles(ListRoles);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
     public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
