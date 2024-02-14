@@ -1,5 +1,5 @@
 package com.younes.reskilingproject.bookManagement.service.BookService;
-import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
+import com.younes.reskilingproject.bookManagement.dto.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.Book;
 
 import java.util.List;

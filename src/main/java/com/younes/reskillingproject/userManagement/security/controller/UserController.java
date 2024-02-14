@@ -1,9 +1,12 @@
 package com.younes.reskillingproject.userManagement.security.controller;
 
 
+import com.younes.reskillingproject.userManagement.security.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
-import com.younes.reskillingproject.userManagement.security.model.Role;
-import com.younes.reskillingproject.userManagement.security.model.UserRequestBody;
+import com.younes.reskillingproject.userManagement.security.dto.AuthenticationResponse;
+import com.younes.reskillingproject.userManagement.security.dto.LoginRequest;
+import com.younes.reskillingproject.userManagement.security.entity.Role;
+import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +26,24 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private JwtGenerator jwtGenerator;
 
     @Autowired
     public UserController(UserServiceImpl userService, PasswordEncoder passwordEncoder,
-                          RoleRepository roleRepository, UserRepository userRepository) {
+                          RoleRepository roleRepository, UserRepository userRepository,
+                          JwtGenerator jwtGenerator) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/role")
     public Role saveRole(@RequestBody Role role) {
         return roleRepository.save(role);
     }
+
     @PostMapping("/register")
     public ResponseEntity<String> saveUser(@RequestBody UserRequestBody user) {
         if(userRepository.existsByUsername(user.getUsername())) {
@@ -45,7 +52,12 @@ public class UserController {
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         userService.addUser(new UserRequestBody(user.getUsername(), encodedPassword, user.getRoleNames()));
-        return new ResponseEntity<>("User created successfully!", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("User created successfully!", HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginInfo) {
+        return userService.authenticate(loginInfo);
     }
 
 

@@ -1,4 +1,4 @@
-package com.younes.reskillingproject.userManagement.security.model;
+package com.younes.reskillingproject.userManagement.security.dto;
 
 import java.util.Set;
 

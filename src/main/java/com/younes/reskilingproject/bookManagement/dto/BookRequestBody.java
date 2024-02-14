@@ -1,4 +1,4 @@
-package com.younes.reskilingproject.bookManagement.DTO;
+package com.younes.reskilingproject.bookManagement.dto;
 
 import com.younes.reskilingproject.bookManagement.entity.Book;
 

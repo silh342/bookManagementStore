@@ -1,6 +1,6 @@
 package com.younes.reskillingproject.userManagement.security.repository;
 
-import com.younes.reskillingproject.userManagement.security.model.User;
+import com.younes.reskillingproject.userManagement.security.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

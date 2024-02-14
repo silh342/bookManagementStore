@@ -1,4 +1,4 @@
-package com.younes.reskillingproject.userManagement.security.model;
+package com.younes.reskillingproject.userManagement.security.entity;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
-import com.younes.reskilingproject.bookManagement.DTO.BookRequestBody;
+import com.younes.reskilingproject.bookManagement.dto.BookRequestBody;
 import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.entity.Category;
 import com.younes.reskilingproject.bookManagement.entity.Inventory;
