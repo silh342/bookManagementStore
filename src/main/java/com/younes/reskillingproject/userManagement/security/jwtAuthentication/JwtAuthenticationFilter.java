@@ -1,4 +1,4 @@
-package com.younes.reskillingproject.userManagement.security;
+package com.younes.reskillingproject.userManagement.security.jwtAuthentication;
 
 import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
 import jakarta.annotation.Nullable;

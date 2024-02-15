@@ -1,4 +1,4 @@
-package com.younes.reskillingproject.userManagement.security;
+package com.younes.reskillingproject.userManagement.security.jwtAuthentication;
 
 import io.jsonwebtoken.security.Keys;
 

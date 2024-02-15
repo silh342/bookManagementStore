@@ -1,6 +1,6 @@
 package com.younes.reskillingproject.userManagement.security.Service;
 
-import com.younes.reskillingproject.userManagement.security.JwtGenerator;
+import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.dto.AuthenticationResponse;
 import com.younes.reskillingproject.userManagement.security.dto.LoginRequest;
 import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;

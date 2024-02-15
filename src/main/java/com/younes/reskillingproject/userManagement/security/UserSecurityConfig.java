@@ -3,6 +3,8 @@ package com.younes.reskillingproject.userManagement.security;
 
 import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
 import com.younes.reskillingproject.userManagement.security.error.CustomAuthenticationFailureHandler;
+import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtAuthenticationFilter;
+import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +27,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class UserSecurityConfig {
-    private JwtAuthEntry jwtAuthEntry;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
@@ -34,13 +35,11 @@ public class UserSecurityConfig {
     public UserSecurityConfig(@Lazy UserRepository userRepository,
                               @Lazy RoleRepository roleRepository,
                               @Lazy AuthenticationManager authenticationManager,
-                              JwtAuthEntry jwtAuthEntry,
                               JwtGenerator jwtGenerator) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.jwtGenerator = jwtGenerator;
-        this.jwtAuthEntry = jwtAuthEntry;
     }
 
     @Bean
@@ -71,20 +70,17 @@ public class UserSecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .anyRequest().authenticated());
-//        http.authorizeHttpRequests(configurer -> configurer
-//                .requestMatchers("/api/user").permitAll()
-//                .requestMatchers("/api/role").hasRole("ADMIN")
-//                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
-//                .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
-//                .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
-//                .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
-//                .requestMatchers(HttpMethod.GET, "/api/books").hasAnyRole("ADMIN","USER","CUSTOMER")
-//                .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("ADMIN","USER","CUSTOMER")
-//                .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
-//                .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
-//                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN"));
+        http.authorizeHttpRequests(configurer -> configurer
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**")
+                .hasAnyRole("ADMIN","USER","CUSTOMER")
+                .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN").anyRequest().authenticated());
         // use HTTP Basic authentication
         http.httpBasic(Customizer.withDefaults());
         // disable Cross Site Request Forgery (CSRF) to enable when creating front end

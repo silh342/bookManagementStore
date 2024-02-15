@@ -1,4 +1,4 @@
-package com.younes.reskillingproject.userManagement.security;
+package com.younes.reskillingproject.userManagement.security.jwtAuthentication;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
