@@ -72,7 +72,7 @@ public class UserSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer -> configurer
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/api/authors").hasAnyRole("ADMIN","USER","CUSTOMER")
                 .requestMatchers("/api/authors/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/api/books/inventory/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/api/inventory/**").hasAnyRole("ADMIN")
