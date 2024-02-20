@@ -80,7 +80,9 @@ public class UserSecurityConfig {
                 .hasAnyRole("ADMIN","USER","CUSTOMER")
                 .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN").anyRequest().authenticated());
+                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                );
         // use HTTP Basic authentication
         http.httpBasic(Customizer.withDefaults());
         // disable Cross Site Request Forgery (CSRF) to enable when creating front end

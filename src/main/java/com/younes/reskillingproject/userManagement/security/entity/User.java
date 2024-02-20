@@ -16,16 +16,26 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-
+    @Column(name = "email")
+    private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> userRoles;
 
     public User() {}
-    public User(String username, String password, Set<Role> userRoles) {
+    public User(String username, String password, String email ,Set<Role> userRoles) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.userRoles = userRoles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public long getId() {

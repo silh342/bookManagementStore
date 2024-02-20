@@ -29,7 +29,7 @@ public class AuthorController {
     public Author addAuthor(@RequestBody Author author) {
         return authorService.saveAuthor(author);
     }
-    @PutMapping("/authors/{id}")
+    @PutMapping("/authors")
     public Author editAuthor(@RequestBody Author author) {
         return authorService.saveAuthor(author);
     }

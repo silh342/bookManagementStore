@@ -45,8 +45,6 @@ public class UserServiceImpl implements UserDetailsService {
         this.jwtGenerator = jwtGenerator;
     }
 
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -71,6 +69,7 @@ public class UserServiceImpl implements UserDetailsService {
 
         user.setUsername(newUser.getUsername());
         user.setPassword(newUser.getPassword());
+        user.setEmail(newUser.getEmail());
 
         for(String name : newUser.getRoleNames()) {
             Role role = roleRepository.findRoleByName(name);

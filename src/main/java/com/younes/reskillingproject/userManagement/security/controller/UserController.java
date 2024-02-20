@@ -49,7 +49,7 @@ public class UserController {
                     HttpStatus.CONFLICT);
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-        userService.addUser(new UserRequestBody(user.getUsername(), encodedPassword, user.getRoleNames()));
+        userService.addUser(new UserRequestBody(user.getUsername(), encodedPassword,user.getEmail(), user.getRoleNames()));
         return new ResponseEntity<>("User created successfully!", HttpStatus.OK);
     }
 
