@@ -9,6 +9,7 @@ import com.younes.reskillingproject.userManagement.security.entity.Role;
 import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,22 +38,24 @@ public class UserController {
         this.jwtGenerator = jwtGenerator;
     }
 
+    @ApiOperation(value = "create role")
     @PostMapping("/role")
     public Role saveRole(@RequestBody Role role) {
         return roleRepository.save(role);
     }
-
+    @PostMapping("/validatetoken")
+    public boolean checkTokenValidity(@RequestBody String token) {
+        return jwtGenerator.validateToken(token);
+    }
+    @ApiOperation(value = "register a new user")
     @PostMapping("/register")
     public ResponseEntity<String> saveUser(@RequestBody UserRequestBody user) {
-        if(userRepository.existsByUsername(user.getUsername())) {
-            return new ResponseEntity<>("The username already exists, please provide a different username",
-                    HttpStatus.CONFLICT);
-        }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         userService.addUser(new UserRequestBody(user.getUsername(), encodedPassword,user.getEmail(), user.getRoleNames()));
         return new ResponseEntity<>("User created successfully!", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Log a user")
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginInfo) {
         return userService.authenticate(loginInfo);

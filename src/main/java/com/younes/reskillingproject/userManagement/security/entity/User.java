@@ -1,7 +1,11 @@
 package com.younes.reskillingproject.userManagement.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.younes.reskilingproject.bookManagement.entity.Book;
+import com.younes.reskilingproject.bookManagement.entity.Review;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,11 +20,20 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> userRoles;
+    @OneToMany(mappedBy = "reviewAuthor", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("reviewAuthor")
+    private Set<Review> reviews = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "user_favorite_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @JsonIgnoreProperties("reviews")
+    private Set<Book> favoriteBooks = new HashSet<>();
 
     public User() {}
     public User(String username, String password, String email ,Set<Role> userRoles) {
@@ -30,14 +43,18 @@ public class User {
         this.userRoles = userRoles;
     }
 
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
     public long getId() {
         return id;
     }
@@ -59,6 +76,13 @@ public class User {
     public void setUserRoles(Set<Role> userRoles) {
         this.userRoles = userRoles;
     }
+    public Set<Book> getFavoriteBooks() {
+        return favoriteBooks;
+    }
+    public void setFavoriteBooks(Set<Book> favoriteBooks) {
+        this.favoriteBooks = favoriteBooks;
+    }
+
     @Override
     public String toString() {
         return "User {" +

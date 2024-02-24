@@ -80,7 +80,7 @@ public class UserSecurityConfig {
                 .hasAnyRole("ADMIN","USER","CUSTOMER")
                 .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("USER","ADMIN")
                 .requestMatchers(HttpMethod.PUT , "/api/books").hasAnyRole("USER","ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 );
         // use HTTP Basic authentication

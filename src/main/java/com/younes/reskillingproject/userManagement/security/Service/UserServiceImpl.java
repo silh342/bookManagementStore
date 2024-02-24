@@ -1,11 +1,13 @@
 package com.younes.reskillingproject.userManagement.security.Service;
 
-import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.dto.AuthenticationResponse;
 import com.younes.reskillingproject.userManagement.security.dto.LoginRequest;
 import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;
 import com.younes.reskillingproject.userManagement.security.entity.Role;
 import com.younes.reskillingproject.userManagement.security.entity.User;
+import com.younes.reskillingproject.userManagement.security.error.EmailExistsException;
+import com.younes.reskillingproject.userManagement.security.error.UsernameExistsException;
+import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +66,15 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     public void addUser(UserRequestBody newUser) {
+
+        if(userRepository.existsByUsername(newUser.getUsername().toLowerCase())) {
+            throw new UsernameExistsException("Username " + newUser.getUsername() + " Already exists, choose another one");
+        }
+        if(userRepository.existsByEmail(newUser.getEmail().toLowerCase())) {
+            throw new EmailExistsException("An account already exists with this email, please log in or try another email");
+        }
         Set<Role> ListRoles = new HashSet<>();
         User user = new User();
-
         user.setUsername(newUser.getUsername());
         user.setPassword(newUser.getPassword());
         user.setEmail(newUser.getEmail());
