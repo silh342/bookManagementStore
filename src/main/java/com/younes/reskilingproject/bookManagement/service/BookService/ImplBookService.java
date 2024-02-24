@@ -12,6 +12,8 @@ import com.younes.reskilingproject.bookManagement.repository.AuthorRepository;
 import com.younes.reskilingproject.bookManagement.repository.BookRepository;
 import com.younes.reskilingproject.bookManagement.repository.CategoryRepository;
 import com.younes.reskilingproject.bookManagement.repository.InventoryRepository;
+import com.younes.reskillingproject.userManagement.security.entity.User;
+import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +25,23 @@ import java.util.Set;
 @Service
 public class ImplBookService implements BookService {
 
-    private BookRepository bookRepository;
-    private AuthorRepository authorRepository;
-    private CategoryRepository categoryRepository;
-    private InventoryRepository inventoryRepository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
+    private final InventoryRepository inventoryRepository;
+    private final UserRepository userService;
 
     @Autowired
     public ImplBookService(BookRepository bookRepo,
                            AuthorRepository authorRepository,
                            CategoryRepository categoryRepository,
-                           InventoryRepository inventoryRepository) {
+                           InventoryRepository inventoryRepository,
+                           UserRepository userService) {
         bookRepository = bookRepo;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
         this.inventoryRepository = inventoryRepository;
+        this.userService = userService;
     }
     @Override
     public List<Book> findAllBooks() {
@@ -46,6 +51,11 @@ public class ImplBookService implements BookService {
     public Book findBookById(long id) {
         return bookRepository.findById(id).orElseThrow(
                     () -> new BookException("Could not find the book by the id " + id));
+    }
+    public void incrementViews(long id) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookException("Could not find book"));
+        book.setViews(book.getViews());
+        bookRepository.save(book);
     }
     @Override
     public List<Book> findBooksByCategoryName(String categoryName) {
@@ -67,7 +77,6 @@ public class ImplBookService implements BookService {
         }
         return books;
     }
-
     @Override
     public List<Book> findBooksByAllFields(String keyword) {
         return bookRepository.searchBooksByAllFields(keyword);
@@ -79,6 +88,20 @@ public class ImplBookService implements BookService {
     @Override
     public List<Book> findAllBooksOrderByTitleDesc() {
         return bookRepository.findAllByOrderByTitleDesc();
+    }
+
+    public Book addBookToFavorites(long bookId, String username,boolean addOrRemove) {
+        User user = userService.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Book currentBook = bookRepository.findById(bookId).orElseThrow(() -> new BookException("Book not found"));
+        if(addOrRemove) {
+            currentBook.getLikedByUsers().remove(user);
+            user.getFavoriteBooks().remove(currentBook);
+        } else {
+            currentBook.getLikedByUsers().add(user);
+            user.getFavoriteBooks().add(currentBook);
+        }
+        userService.save(user);
+        return bookRepository.save(currentBook);
     }
     @Override
     public Book saveBook(Book newBook, String authorName, String categoryName, int quantity) {

@@ -17,6 +17,7 @@ public class AuthorController {
     public AuthorController(ImplAuthorService authorService) {
         this.authorService = authorService;
     }
+
     @GetMapping("/authors")
     public List<Author> allAuthors() {
         return authorService.findAllAuthors();

@@ -1,9 +1,13 @@
 package com.younes.reskilingproject.bookManagement.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.younes.reskillingproject.userManagement.security.entity.User;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -33,6 +37,15 @@ public class Book {
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "inventory_books")
     private Inventory inventory;
+    @Column(name = "views")
+    private long views = 0;
+    @OneToMany(mappedBy = "reviewedBook", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("reviewedBook")
+    private Set<Review> reviews = new HashSet<>();
+    @ManyToMany(mappedBy = "favoriteBooks")
+    @JsonIgnoreProperties({"favoriteBooks", "reviews"})
+    private Set<User> likedByUsers = new HashSet<>();
+
 
     // Constructor
     public Book() {}
@@ -48,6 +61,26 @@ public class Book {
     }
 
     // Getter Setter
+
+    public Set<User> getLikedByUsers() {
+        return likedByUsers;
+    }
+    public void setLikedByUsers(Set<User> likedByUsers) {
+        this.likedByUsers = likedByUsers;
+    }
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
+    }
+    public long getViews() {
+        return views;
+    }
+    public void setViews(long views) {
+        this.views = views + 1;
+    }
+
     public long getBookId() {
         return bookId;
     }

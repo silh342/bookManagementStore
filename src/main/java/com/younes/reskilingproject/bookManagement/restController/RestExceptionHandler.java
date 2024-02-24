@@ -1,17 +1,20 @@
 package com.younes.reskilingproject.bookManagement.restController;
 
 import com.younes.reskilingproject.bookManagement.errorHandler.AuthorException;
+import com.younes.reskilingproject.bookManagement.errorHandler.BookException;
 import com.younes.reskilingproject.bookManagement.errorHandler.CategoryException;
 import com.younes.reskilingproject.bookManagement.errorHandler.models.AuthorErrorResponse;
-import com.younes.reskilingproject.bookManagement.errorHandler.BookException;
 import com.younes.reskilingproject.bookManagement.errorHandler.models.BookErrorResponse;
 import com.younes.reskilingproject.bookManagement.errorHandler.models.CategoryErrorResponse;
+import com.younes.reskillingproject.userManagement.security.error.EmailExistsException;
+import com.younes.reskillingproject.userManagement.security.error.UsernameExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -60,5 +63,17 @@ public class RestExceptionHandler {
         customErr.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<>(customErr, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<String> handleUsernameExistsException(UsernameExistsException exc) {
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<String> handleEmailExistsException(EmailExistsException exc) {
+        return new ResponseEntity<>(exc.getMessage(), HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthException(AuthenticationException exc) {
+        return new ResponseEntity<>("Authentication Failed, " + exc.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
