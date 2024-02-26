@@ -70,6 +70,11 @@ public class BookController {
         return bookService.findAllBooks();
     }
 
+    @GetMapping("/books/favoritesbyuser/{username}")
+    public List<Book> getFavoriteBooksByUser(@PathVariable String username) {
+        return bookService.getFavoriteBooksByUser(username);
+    }
+
     @ApiOperation(value = "getAllCategories")
     @GetMapping("/categories")
     public List<Category> findAllCategories() {
@@ -95,12 +100,10 @@ public class BookController {
         return bookService.saveBook(reqBody.getBook(),
                     reqBody.getAuthorName(), reqBody.getCategoryName(), reqBody.getQuantity());
     }
-
     @PostMapping("/books/favorite")
     public Book addBookToFavorites(@RequestBody FavoriteBook reqBody) {
         return bookService.addBookToFavorites(reqBody.getBookId(), reqBody.getUsername(), reqBody.isAddOrRemove());
     }
-
     @ApiOperation(value = "update a book")
     @PutMapping("/books/{id}")
     public Book editBook(@PathVariable long id, @RequestBody BookRequestBody requestBody) {

@@ -15,6 +15,7 @@ import com.younes.reskilingproject.bookManagement.repository.InventoryRepository
 import com.younes.reskillingproject.userManagement.security.entity.User;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -80,6 +81,12 @@ public class ImplBookService implements BookService {
     @Override
     public List<Book> findBooksByAllFields(String keyword) {
         return bookRepository.searchBooksByAllFields(keyword);
+    }
+    @Override
+    public List<Book> getFavoriteBooksByUser(String username) {
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't exist, please try another one"));
+        return user.getFavoriteBooks().stream().toList();
     }
     @Override
     public List<Book> findAllBooksOrderByTitleAsc() {
