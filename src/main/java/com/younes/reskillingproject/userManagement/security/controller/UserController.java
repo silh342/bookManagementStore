@@ -1,12 +1,14 @@
 package com.younes.reskillingproject.userManagement.security.controller;
 
 
-import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.Service.UserServiceImpl;
 import com.younes.reskillingproject.userManagement.security.dto.AuthenticationResponse;
 import com.younes.reskillingproject.userManagement.security.dto.LoginRequest;
-import com.younes.reskillingproject.userManagement.security.entity.Role;
+import com.younes.reskillingproject.userManagement.security.dto.SetUserRoleRequestBody;
 import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;
+import com.younes.reskillingproject.userManagement.security.entity.Role;
+import com.younes.reskillingproject.userManagement.security.entity.User;
+import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -59,6 +63,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginInfo) {
         return userService.authenticate(loginInfo);
+    }
+    @PostMapping("/setuserrole")
+    public User setUserRole(@RequestBody SetUserRoleRequestBody userRoleInfo) {
+        return userService.setUserRole(userRoleInfo.getUsername(), userRoleInfo.getRolename());
+    }
+
+    @GetMapping("getusers")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
 

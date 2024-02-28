@@ -1,6 +1,7 @@
 package com.younes.reskillingproject.userManagement.security.Service;
 
 import com.younes.reskillingproject.userManagement.security.dto.AuthenticationResponse;
+import com.younes.reskillingproject.userManagement.security.dto.CustomUserDetails;
 import com.younes.reskillingproject.userManagement.security.dto.LoginRequest;
 import com.younes.reskillingproject.userManagement.security.dto.UserRequestBody;
 import com.younes.reskillingproject.userManagement.security.entity.Role;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,10 +53,14 @@ public class UserServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid username or password."));
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetails(
                 user.getUsername(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getUserRoles()));
+                mapRolesToAuthorities(user.getUserRoles()), user.getEmail());
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public ResponseEntity<AuthenticationResponse> authenticate(LoginRequest userInfo) {
@@ -85,6 +91,14 @@ public class UserServiceImpl implements UserDetailsService {
         }
         user.setUserRoles(ListRoles);
         userRepository.save(user);
+    }
+
+    public User setUserRole(String username, String rolename) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Role role = roleRepository.findRoleByName(rolename);
+        user.getUserRoles().clear();
+        user.getUserRoles().add(role);
+        return userRepository.save(user);
     }
     public Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());

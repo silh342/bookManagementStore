@@ -1,5 +1,6 @@
 package com.younes.reskillingproject.userManagement.security.jwtAuthentication;
 
+import com.younes.reskillingproject.userManagement.security.dto.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -20,11 +21,15 @@ public class JwtGenerator {
                 .stream()
                 .map(Object::toString)
                 .collect(Collectors.toSet());
+        // and ofc for obvious reasons i want to send the email too
+        String email = ((CustomUserDetails) authentication.getPrincipal()).getEmail();
+
 
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstant.JWT_EXPIRATION);
         return  Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles)
+                .claim("email", email)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(SecurityConstant.JWT_SECRET)
