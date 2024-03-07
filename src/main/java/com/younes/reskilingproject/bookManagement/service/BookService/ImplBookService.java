@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ImplBookService implements BookService {
@@ -176,7 +173,10 @@ public class ImplBookService implements BookService {
     }
     @Override
     public void deleteBook(long id) {
-        if(findBookById(id) != null) bookRepository.deleteById(id);
-
+        Book book = bookRepository.findById(id).orElseThrow(() -> new BookException("Book Not found"));
+        for(User user: book.getLikedByUsers()) {
+            user.getFavoriteBooks().remove(book);
+        }
+       bookRepository.deleteById(id);
     }
 }

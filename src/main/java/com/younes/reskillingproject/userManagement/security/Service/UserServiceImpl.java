@@ -71,6 +71,8 @@ public class UserServiceImpl implements UserDetailsService {
         return new ResponseEntity<>(new AuthenticationResponse(token), HttpStatus.OK);
     }
 
+
+
     public void addUser(UserRequestBody newUser) {
 
         if(userRepository.existsByUsername(newUser.getUsername().toLowerCase())) {
