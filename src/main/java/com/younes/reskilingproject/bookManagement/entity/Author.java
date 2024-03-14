@@ -15,7 +15,7 @@ public class Author {
     private String fullName;
     @Column
     private String description;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author")
     @JsonIgnoreProperties("author")
     private Set<Book> books;
 

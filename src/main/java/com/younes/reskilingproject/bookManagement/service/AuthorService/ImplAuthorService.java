@@ -1,6 +1,7 @@
 package com.younes.reskilingproject.bookManagement.service.AuthorService;
 
 import com.younes.reskilingproject.bookManagement.entity.Author;
+import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.errorHandler.AuthorException;
 import com.younes.reskilingproject.bookManagement.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class ImplAuthorService implements AuthorService {
     }
     @Override
     public void deleteAuthor(long id) {
-        if(findAuthor(id) != null) authorRepository.deleteById(id);
+        // Setting author of book entity to null before deleting the author
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorException("Author Not Found"));
+        for(Book book: author.getBooks()) {
+            book.setAuthor(null);
+        }
+       authorRepository.deleteById(id);
     }
 }
