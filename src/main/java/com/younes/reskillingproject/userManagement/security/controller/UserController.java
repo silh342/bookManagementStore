@@ -11,7 +11,6 @@ import com.younes.reskillingproject.userManagement.security.entity.User;
 import com.younes.reskillingproject.userManagement.security.jwtAuthentication.JwtGenerator;
 import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class UserController {
         this.jwtGenerator = jwtGenerator;
     }
 
-    @ApiOperation(value = "create role")
+
     @PostMapping("/role")
     public Role saveRole(@RequestBody Role role) {
         return roleRepository.save(role);
@@ -51,7 +50,7 @@ public class UserController {
     public boolean checkTokenValidity(@RequestBody String token) {
         return jwtGenerator.validateToken(token);
     }
-    @ApiOperation(value = "register a new user")
+
     @PostMapping("/register")
     public ResponseEntity<String> saveUser(@RequestBody UserRequestBody user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -59,7 +58,6 @@ public class UserController {
         return new ResponseEntity<>("User created successfully!", HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Log a user")
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginInfo) {
         return userService.authenticate(loginInfo);
