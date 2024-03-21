@@ -8,6 +8,13 @@ public class BookRequestBody {
     private String authorName;
     private String categoryName;
 
+    public BookRequestBody(Book book, int quantity, String authorName, String categoryName) {
+        this.book = book;
+        this.quantity = quantity;
+        this.authorName = authorName;
+        this.categoryName = categoryName;
+    }
+
     public Book getBook() {
         return book;
     }

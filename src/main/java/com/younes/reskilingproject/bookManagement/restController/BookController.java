@@ -26,9 +26,9 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Book Endpoints")
 public class BookController {
-    private ImplBookService bookService;
-    private ImplInventoryService inventoryService;
-    private ImplCategoryService categoryService;
+    private final ImplBookService bookService;
+    private final ImplInventoryService inventoryService;
+    private final ImplCategoryService categoryService;
     private final ReviewService reviewService;
 
     @Autowired

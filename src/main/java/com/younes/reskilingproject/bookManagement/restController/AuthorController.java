@@ -17,12 +17,11 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Author Endpoints")
 public class AuthorController {
-    private ImplAuthorService authorService;
+    private final ImplAuthorService authorService;
     @Autowired
     public AuthorController(ImplAuthorService authorService) {
         this.authorService = authorService;
     }
-
     @Operation(summary = "Get list of all authors")
     @GetMapping("/authors")
     public List<Author> allAuthors() {
