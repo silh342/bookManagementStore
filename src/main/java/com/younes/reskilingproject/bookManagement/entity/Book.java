@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "book")
-public class Book {
+public class Book implements  Cloneable{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "book_id")
@@ -146,5 +146,15 @@ public class Book {
                 ", dateCreation=" + dateCreation +
                 ", inventory=" + inventory +
                 '}';
+    }
+
+    @Override
+    public Book clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (Book) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
