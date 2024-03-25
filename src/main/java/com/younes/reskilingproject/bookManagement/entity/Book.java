@@ -60,7 +60,14 @@ public class Book implements  Cloneable{
         this.inventory = inventory;
     }
 
-    // Getter Setter
+    public Book(String ISBN, String title, float price, Date datePublication, Date dateCreation) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.price = price;
+        this.datePublication = datePublication;
+        this.dateCreation = dateCreation;
+    }
+// Getter Setter
 
     public Set<User> getLikedByUsers() {
         return likedByUsers;
