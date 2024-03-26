@@ -121,7 +121,7 @@ public class BookServiceTests {
         List<Book> expectedResult = listBooks.stream().filter(book -> Objects.equals(book.getAuthor().getFullName(), normalAuthor.getFullName())).collect(Collectors.toList());
         List<Author> expectedAuthors = listAuthors.stream().filter(author -> Objects.equals(author.getFullName(),"Sally Rooney")).toList();
         // repositories needed inside of the findBooksByAuthor method in the service
-        when(bookRepository.findBooksByAuthor(normalAuthor)).thenReturn(expectedResult);
+        when(bookRepository.findBooksByAuthor(Mockito.any(Author.class))).thenReturn(expectedResult);
         when(authorRepository.findAuthorByFullNameContainingIgnoreCase("Sally Rooney"))
                 .thenReturn(Optional.of(expectedAuthors));
         List<Book> findBooksByAuthor = bookService.findBooksByAuthor("Sally Rooney");
