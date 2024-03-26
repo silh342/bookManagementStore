@@ -3,7 +3,6 @@ package com.younes.reskilingproject.bookManagement.repository;
 
 import com.younes.reskillingproject.userManagement.security.entity.Role;
 import com.younes.reskillingproject.userManagement.security.entity.User;
-import com.younes.reskillingproject.userManagement.security.repository.RoleRepository;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,8 +21,6 @@ public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Test
     public void UserRepository_findAllUsers_ReturnUsers() {
