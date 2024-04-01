@@ -2,8 +2,8 @@ package com.younes.reskilingproject.bookManagement.service.ReviewService;
 
 import com.younes.reskilingproject.bookManagement.entity.Book;
 import com.younes.reskilingproject.bookManagement.entity.Review;
+import com.younes.reskilingproject.bookManagement.repository.BookRepository;
 import com.younes.reskilingproject.bookManagement.repository.ReviewRepository;
-import com.younes.reskilingproject.bookManagement.service.BookService.ImplBookService;
 import com.younes.reskillingproject.userManagement.security.entity.User;
 import com.younes.reskillingproject.userManagement.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final ImplBookService bookService;
+    private final BookRepository bookRepository;
     @Autowired
     public ReviewServiceImpl(ReviewRepository reviewRepository,
                              UserRepository userRepository,
-                             ImplBookService bookRepository) {
+                             BookRepository bookRepository) {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
-        this.bookService = bookRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
     public Review addReview(String body, byte rating, String username, long bookId) {
         User user = userRepository.findByUsername(username).orElse(null);
-        Book book = bookService.findBookById(bookId);
+        Book book = bookRepository.findById(bookId).orElse(null);
         Review review = new Review(body, rating, user, book);
         return reviewRepository.save(review);
     }

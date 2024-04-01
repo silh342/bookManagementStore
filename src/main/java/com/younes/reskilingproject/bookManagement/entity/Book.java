@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.younes.reskillingproject.userManagement.security.entity.User;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "book")
@@ -41,7 +39,7 @@ public class Book implements  Cloneable{
     private long views = 0;
     @OneToMany(mappedBy = "reviewedBook", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("reviewedBook")
-    private Set<Review> reviews = new HashSet<>();
+    private List<Review> reviews = new ArrayList<>();
     @ManyToMany(mappedBy = "favoriteBooks")
     @JsonIgnoreProperties({"favoriteBooks", "reviews"})
     private Set<User> likedByUsers = new HashSet<>();
@@ -75,10 +73,10 @@ public class Book implements  Cloneable{
     public void setLikedByUsers(Set<User> likedByUsers) {
         this.likedByUsers = likedByUsers;
     }
-    public Set<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
-    public void setReviews(Set<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
     public long getViews() {
