@@ -59,7 +59,7 @@ public class BookServiceTests {
                             simpleDateFormat.parse("2018-08-28"));
 
         when(bookRepository.save(Mockito.any(Book.class))).thenReturn(book);
-        Book savedBook = bookService.saveBook(book,"Sally Rooney", "Romance", 15);
+        Book savedBook = bookService.saveBook(new BookRequestBody(book,15,"Sally Rooney", "Romance"));
         Assertions.assertNotNull(savedBook);
     }
 

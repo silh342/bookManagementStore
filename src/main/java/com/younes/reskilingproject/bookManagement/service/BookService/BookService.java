@@ -7,7 +7,7 @@ import java.util.List;
 public interface BookService {
     public List<Book> findAllBooks();
     public Book findBookById(long id);
-    public Book saveBook(Book book, String authorName, String categoryName, int quantity);
+    public Book saveBook(BookRequestBody requestBody);
     public Book editBook(long id, BookRequestBody book);
     public Book addBookToFavorites(long bookId, String username, boolean addOrRemove);
     public List<Book> getFavoriteBooksByUser(String username);

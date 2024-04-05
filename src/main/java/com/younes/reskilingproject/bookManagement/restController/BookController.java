@@ -113,9 +113,7 @@ public class BookController {
     @PostMapping(value = "/books")
     public Book addBook(@RequestBody BookRequestBody reqBody){
         // Add author and category if they don't exist
-        System.out.println(reqBody);
-        return bookService.saveBook(reqBody.getBook(),
-                    reqBody.getAuthorName(), reqBody.getCategoryName(), reqBody.getQuantity());
+        return bookService.saveBook(reqBody);
     }
     @Operation(summary = "Add book to user's favorite books")
     @PostMapping("/books/favorite")

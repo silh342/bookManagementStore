@@ -108,33 +108,33 @@ public class ImplBookService implements BookService {
         return bookRepository.save(currentBook);
     }
     @Override
-    public Book saveBook(Book newBook, String authorName, String categoryName, int quantity) {
+    public Book saveBook(BookRequestBody requestBody) {
 
-        Author author = authorRepository.findAuthorByFullNameIgnoreCase(authorName)
+        Author author = authorRepository.findAuthorByFullNameIgnoreCase(requestBody.getAuthorName())
                 .orElseGet(() -> {
                     Set<Book> listAuthorBooks = new HashSet<>();
-                    listAuthorBooks.add(newBook);
-                    Author newAuthor = new Author(authorName, " ", listAuthorBooks);
+                    listAuthorBooks.add(requestBody.getBook());
+                    Author newAuthor = new Author(requestBody.getAuthorName(), " ", listAuthorBooks);
                     return authorRepository.save(newAuthor);
                 });
-        Category category = categoryRepository.findCategoryByCategoryNameIgnoreCase(categoryName)
+        Category category = categoryRepository.findCategoryByCategoryNameIgnoreCase(requestBody.getCategoryName())
                 .orElseGet(() -> {
                     List<Book> listBooksCategory = new ArrayList<>();
-                    listBooksCategory.add(newBook);
-                    Category newCategory = new Category(categoryName, listBooksCategory);
+                    listBooksCategory.add(requestBody.getBook());
+                    Category newCategory = new Category(requestBody.getCategoryName(), listBooksCategory);
                     return categoryRepository.save(newCategory);
                 });
 
-        author.getBooks().add(newBook);
-        category.getBooks().add(newBook);
-        newBook.setAuthor(author);
-        newBook.setCategory(category);
+        author.getBooks().add(requestBody.getBook());
+        category.getBooks().add(requestBody.getBook());
+        requestBody.getBook().setAuthor(author);
+        requestBody.getBook().setCategory(category);
 
-        Inventory newEntry = new Inventory(quantity, newBook);
+        Inventory newEntry = new Inventory(requestBody.getQuantity(), requestBody.getBook());
         inventoryRepository.save(newEntry);
-        newBook.setInventory(newEntry);
+        requestBody.getBook().setInventory(newEntry);
 
-        return bookRepository.save(newBook);
+        return bookRepository.save(requestBody.getBook());
     }
     @Override
     public Book editBook(long id, BookRequestBody book) {
